@@ -3,6 +3,7 @@ import { Mail, Lock, User, ArrowRight } from "lucide-react";
 import BaseInput from "./BaseInput";
 import { authStore } from "@/store/authStore";
 import { useStore } from "zustand";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthForm({
   isSigningUp,
@@ -12,6 +13,7 @@ export default function AuthForm({
   setIsSigningUp: (isSigningUp: boolean) => void;
 }) {
   const useAuthStore = useStore(authStore);
+  const navigate = useNavigate();
 
   const [user, setUser] = useState({
     email: "",
@@ -28,11 +30,16 @@ export default function AuthForm({
   };
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (isSigningUp) {
-      await useAuthStore.register(user);
-    } else {
-      await useAuthStore.login(user);
+    try {
+      e.preventDefault();
+      if (isSigningUp) {
+        await useAuthStore.register(user);
+      } else {
+        await useAuthStore.login(user);
+      }
+      navigate("/");
+    } catch (error) {
+      console.error(error);
     }
   }
 

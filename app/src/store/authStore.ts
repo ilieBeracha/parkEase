@@ -53,8 +53,6 @@ export const authStore = create<AuthStore>((set) => ({
     const token = localStorage.getItem("token");
     if (token) {
       set({ token, isLoggedIn: true });
-    } else {
-      set({ isLoggedIn: false });
     }
   },
 

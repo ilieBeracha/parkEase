@@ -1,7 +1,39 @@
 import { MapPin, Clock, ArrowRight, Star, Shield, Car } from "lucide-react";
-import { Link } from "react-router-dom";
 import parkingImage from "@/assets/images/1.jpg";
-export default function HomeHero() {
+import { authStore } from "@/store/authStore";
+import { useStore } from "zustand";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+export default function HeroSearch() {
+  const useAuthStore = useStore(authStore);
+  const navigate = useNavigate();
+
+  const [location, setLocation] = useState("");
+  const [date, setDate] = useState("");
+  const [errors, setErrors] = useState({ location: false, date: false });
+
+  function onSearch() {
+    const newErrors = {
+      location: location === "",
+      date: date === "",
+    };
+    setErrors(newErrors);
+
+    if (newErrors.location || newErrors.date) {
+      toast.error("Please enter a location and date");
+      return;
+    }
+
+    if (useAuthStore.isLoggedIn) {
+      navigate("/home");
+    } else {
+      toast.error("You must be logged in to search");
+      navigate("/auth");
+    }
+  }
+
   return (
     <section className="relative flex items-center py-16">
       {/* Background Pattern */}
@@ -34,25 +66,41 @@ export default function HomeHero() {
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <input
+                    onChange={(e) => {
+                      setLocation(e.target.value);
+                      setErrors((prev) => ({ ...prev, location: false }));
+                    }}
                     type="text"
                     placeholder="Location"
-                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500"
+                    className={`w-full pl-10 pr-4 py-2.5 bg-gray-50 rounded-xl focus:ring-2 ${
+                      errors.location
+                        ? "border-2 border-red-500"
+                        : "border-0 focus:ring-blue-500"
+                    }`}
                   />
                 </div>
                 <div className="relative">
                   <Clock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <input
+                    onChange={(e) => {
+                      setDate(e.target.value);
+                      setErrors((prev) => ({ ...prev, date: false }));
+                    }}
                     type="datetime-local"
-                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500"
+                    className={`w-full pl-10 pr-4 py-2.5 bg-gray-50 rounded-xl focus:ring-2 ${
+                      errors.date
+                        ? "border-2 border-red-500"
+                        : "border-0 focus:ring-blue-500"
+                    }`}
                   />
                 </div>
-                <Link
-                  to="/search"
+                <button
+                  onClick={onSearch}
                   className="bg-blue-600 text-white px-8 py-2.5 rounded-xl hover:bg-blue-700 transition flex items-center justify-center gap-2"
                 >
                   Search
                   <ArrowRight className="h-5 w-5" />
-                </Link>
+                </button>
               </div>
             </div>
 

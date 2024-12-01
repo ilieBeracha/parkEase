@@ -6,6 +6,12 @@ import { useStore } from "zustand";
 export default function Header() {
   const navigate = useNavigate();
   const useAuthStore = useStore(authStore);
+
+  const logout = () => {
+    useAuthStore.logout();
+    navigate("/");
+  };
+
   return (
     <header className="fixed top-0 w-full bg-white/80  backdrop-blur-sm shadow-md z-50">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -20,9 +26,12 @@ export default function Header() {
         </div>
 
         <div className="hidden md:flex items-center space-x-8">
-          <a href="#" className="text-gray-900 hover:text-blue-600 transition">
-            About
-          </a>
+          <NavLink
+            to="/home"
+            className="text-gray-900 hover:text-blue-600 transition"
+          >
+            Find Parking
+          </NavLink>
           {!useAuthStore.isLoggedIn ? (
             <NavLink
               to="/auth"
@@ -33,7 +42,7 @@ export default function Header() {
             </NavLink>
           ) : (
             <button
-              onClick={() => useAuthStore.logout()}
+              onClick={() => logout()}
               className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-all duration-300"
             >
               <User className="h-4 w-4" />

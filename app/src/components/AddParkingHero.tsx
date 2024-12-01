@@ -1,3 +1,4 @@
+import { authStore } from "@/store/authStore";
 import {
   ArrowRight,
   DollarSign,
@@ -6,9 +7,22 @@ import {
   Wallet,
   Clock,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useStore } from "zustand";
+import { toast } from "react-toastify";
 
-export default function HomeAddParking() {
+export default function AddParkingHero() {
+  const useAuthStore = useStore(authStore);
+  const navigate = useNavigate();
+
+  function onListYourSpace() {
+    if (useAuthStore.isLoggedIn) {
+      navigate("/add-parking");
+    } else {
+      toast.error("You must be logged in to list your space");
+    }
+  }
+
   return (
     <div className=" bg-white">
       {/* Hero Section */}
@@ -90,13 +104,13 @@ export default function HomeAddParking() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to="/register"
+                <button
+                  onClick={onListYourSpace}
                   className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   List Your Space
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                </button>
                 <button className="inline-flex items-center justify-center px-8 py-4 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition border-2 border-gray-200">
                   Learn More
                 </button>

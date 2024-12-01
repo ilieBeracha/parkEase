@@ -1,13 +1,13 @@
-import Hero from "../components/LandingPageHero";
+import Hero from "../components/HeroSearch";
 import Features from "../components/Features";
 import FAQ from "../components/FAQ";
-import RentYourSpace from "../components/RentYourSpace";
+import AddParkingHero from "@/components/AddParkingHero";
 
 function LandingPage() {
   return (
     <div className=" bg-white">
       <Hero />
-      <RentYourSpace />
+      <AddParkingHero />
       <Features />
       <FAQ />
     </div>

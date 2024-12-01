@@ -6,6 +6,7 @@ import Auth from "./views/Auth";
 import { authStore } from "./store/authStore";
 import { useStore } from "zustand";
 import Home from "./views/Home";
+import AddParking from "./views/AddParking";
 import { useEffect } from "react";
 
 function App() {
@@ -20,17 +21,18 @@ function App() {
       <Header />
       <main className="pt-16">
         <Routes>
-          {useAuthStore.isLoggedIn ? (
-            <>
-              <Route path="*" element={<Home />} />
-              {/* <Route path="/auth" element={<Auth />} /> */}
-            </>
+          {/* {useAuthStore.isLoggedIn ? (
+            <> */}
+          <Route path="/home" element={<Home />} />
+          <Route path="/add-parking" element={<AddParking />} />
+          {/* <Route path="/auth" element={<Auth />} /> */}
+          {/* </>
           ) : (
-            <>
-              <Route path="*" element={<LandingPage />} />
-              <Route path="/auth" element={<Auth />} />
-            </>
-          )}
+            <> */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/auth" element={<Auth />} />
+          {/* </>
+          )} */}
         </Routes>
       </main>
       <Footer />
